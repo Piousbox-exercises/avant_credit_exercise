@@ -4,7 +4,6 @@ require_relative '../src/card'
 
 class CardTest < Test::Unit::TestCase
 
-proc do # hidden
   def test_interest
     card = Card.new
     card.draw( :on_day => 20, :amount =>  150 )
@@ -45,7 +44,6 @@ proc do # hidden
     # assert_equal( 514.38, card.payoff_amount( :on_day => 30 ) )
     assert_equal( 513.9, card.payoff_amount( :on_day => 30 ) )
   end
-end
 
   def test_less_than_30_days
     card = Card.new
@@ -53,7 +51,6 @@ end
     card.make_payment( :on_day => 15, :amount => 200 )
     card.draw( :on_day => 25, :amount => 100 )
     assert_equal( 411.51, card.payoff_amount( :on_day => 31 ) )
-    assert_equal( 400, card.payoff_amount( :on_day => 26 ) )
   end
 
 

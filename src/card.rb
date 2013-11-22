@@ -131,13 +131,9 @@ class Card < Array
   end
 
   def puts! args
+    return []
     puts '+++ +++'
     puts args.inspect
-  end
-
-  class Transaction < Hash    
-    def initialize
-    end
   end
   
 end
