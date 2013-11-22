@@ -54,18 +54,9 @@ class Card < Array
     endd = on_day
 
     on_day = ( on_day / 30 ).floor * 30
-    puts! "on day #{on_day}"
-
-    puts! 'self'
-    puts! self
 
     begin
     while ( self[counter+1] && self[counter+1][:on_day] <= on_day ) || self[counter][:on_day] < on_day
-
-      puts! 'counter'
-      puts! counter
-      puts! ( self[counter+1] && self[counter+1][:on_day] <= on_day )
-      puts! self[counter][:on_day] < on_day
 
       begin
         endd = self[counter+1][:on_day]
@@ -73,29 +64,15 @@ class Card < Array
         endd = on_day
       end
 
-      puts! "in-loop endd #{endd}"
-    
       period = { :begin => self[counter][:on_day], :end => endd }
 
-      puts! 'period'
-      puts! period
-
       balance += self[counter][:amount]
-        
-      puts! 'balance'
-      puts! balance
-       
+               
       n_days = period[:end] - period[:begin]
-        
-      puts! 'n days'
-      puts! n_days
-        
+                
       this_delta = balance * APR / 365 * n_days 
       interest += this_delta
       
-      puts! 'delta'
-      puts! this_delta
-
       counter += 1
 
     end
@@ -105,19 +82,11 @@ class Card < Array
     if endd < on_day
 
       balance += self[counter][:amount]
-      puts! 'last balance'
-      puts! balance 
 
       n_days = on_day - endd
 
-      puts! 'n_days'
-      puts! n_days
-
       this_delta = balance * APR / 365 * n_days
       interest += this_delta
-
-      puts! 'this delta'
-      puts! this_delta
     end
 
     if return_balance
@@ -125,12 +94,6 @@ class Card < Array
     else
       return interest.round( 2 )
     end
-  end
-
-  def puts! args
-    return []
-    puts '+++ +++'
-    puts args.inspect
   end
   
 end

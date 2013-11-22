@@ -20,10 +20,7 @@ class CardTest < Test::Unit::TestCase
     card = Card.new
     card.draw( :on_day => 1, :amount => 500 )
     card.make_payment( :on_day => 15, :amount => 200 )
-    card.draw( :on_day => 25, :amount => 100 )
-    
-    # puts! card.payoff_amount( :on_day => 15 )
-    
+    card.draw( :on_day => 25, :amount => 100 )    
     assert_equal( 11.51, card.interest( :on_day => 30 ) )
     assert_equal( 411.51, card.payoff_amount( :on_day => 30 ))
   end
@@ -39,8 +36,10 @@ class CardTest < Test::Unit::TestCase
   def test_scenario_1
     card = Card.new
     card.draw( :on_day => 1, :amount => 500 )
+    # this is a mistake in the question
     # assert_equal( 14.38, card.interest( :on_day => 30 ) )
     assert_equal( 13.90, card.interest( :on_day => 30 ) )
+    # this is a mistake in the question
     # assert_equal( 514.38, card.payoff_amount( :on_day => 30 ) )
     assert_equal( 513.9, card.payoff_amount( :on_day => 30 ) )
   end
@@ -51,15 +50,6 @@ class CardTest < Test::Unit::TestCase
     card.make_payment( :on_day => 15, :amount => 200 )
     card.draw( :on_day => 25, :amount => 100 )
     assert_equal( 411.51, card.payoff_amount( :on_day => 31 ) )
-  end
-
-
-  private
-
-  def puts! args
-    return []
-    puts '+++ +++'
-    puts args.inspect
   end
 
 end
