@@ -20,30 +20,7 @@ class Card < Array
   end
 
   def get_balance on_day
-    interest = 0
-    balance = 0
-    counter = 0
-
-    this_day = ( on_day / 30 ).floor * 30
-
-    begin
-      endd = self[counter+1][:on_day]
-    rescue
-      endd = this_day
-    end
-
-    period = { :begin => self[counter][:on_day], :end => endd }
-    if period[:end] >= this_day
-      balance += self[0][:amount]
-      n_days = period[:end] - period[:begin]
-      this_delta = balance * APR / 365 * n_days 
-      interest += this_delta
-    end
-
-    # puts! 'balance'
-    # puts! balance
-
-    return balance
+    get_interest on_day, :return_balance => true
   end
 
 
@@ -70,49 +47,87 @@ class Card < Array
     self.sort_by! { |k| k[:on_day] }
   end
 
-  def get_interest on_day
-    # puts! 'on day'
-    # puts! on_day
-
+  def get_interest on_day, return_balance = false
     interest = 0
     balance = 0
     counter = 0
+    endd = on_day
 
-    this_day = ( on_day / 30 ).floor * 30
+    on_day = ( on_day / 30 ).floor * 30
+    puts! "on day #{on_day}"
 
-    # puts! 'this day:'
-    # puts! this_day
+    puts! 'self'
+    puts! self
 
     begin
-      endd = self[counter+1][:on_day]
-    rescue
-      endd = this_day
-    end
+    while ( self[counter+1] && self[counter+1][:on_day] <= on_day ) || self[counter][:on_day] < on_day
 
-    # puts! endd
+      puts! 'counter'
+      puts! counter
+      puts! ( self[counter+1] && self[counter+1][:on_day] <= on_day )
+      puts! self[counter][:on_day] < on_day
+
+      begin
+        endd = self[counter+1][:on_day]
+      rescue
+        endd = on_day
+      end
+
+      puts! "in-loop endd #{endd}"
     
-    period = { :begin => self[counter][:on_day], :end => endd }
-    if period[:end] >= this_day
-      balance += self[0][:amount]
+      period = { :begin => self[counter][:on_day], :end => endd }
 
-      # puts! 'balance'
-      # puts! balance
+      puts! 'period'
+      puts! period
 
-      # puts! period
-
+      balance += self[counter][:amount]
+        
+      puts! 'balance'
+      puts! balance
+       
       n_days = period[:end] - period[:begin]
-     
-      # puts! 'n days'
-      # puts! n_days
-
+        
+      puts! 'n days'
+      puts! n_days
+        
       this_delta = balance * APR / 365 * n_days 
       interest += this_delta
-      # puts! 'delta'
-      # puts! this_delta
+      
+      puts! 'delta'
+      puts! this_delta
+
+      counter += 1
+
+    end
+    rescue
     end
 
-    # puts! interest
-    return interest.round( 2 )
+    if endd < on_day
+
+      balance += self[counter][:amount]
+      puts! 'last balance'
+      puts! balance 
+
+      n_days = on_day - endd
+
+      puts! 'n_days'
+      puts! n_days
+
+      this_delta = balance * APR / 365 * n_days
+      interest += this_delta
+
+      puts! 'this delta'
+      puts! this_delta
+    end
+
+    puts! 'interest'
+    puts! interest
+
+    if return_balance
+      return balance.round( 2 )
+    else
+      return interest.round( 2 )
+    end
   end
 
   def puts! args
