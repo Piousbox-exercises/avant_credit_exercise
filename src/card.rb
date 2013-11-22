@@ -120,9 +120,6 @@ class Card < Array
       puts! this_delta
     end
 
-    puts! 'interest'
-    puts! interest
-
     if return_balance
       return balance.round( 2 )
     else
